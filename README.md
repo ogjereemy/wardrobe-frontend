@@ -84,6 +84,10 @@ The application interacts with a backend API to manage clothing items. Ensure th
 Create a `.env` file in the project root and add the following:
 
 ```
+    Backend repository Url = https://github.com/ogjereemy/wardrobe-backend.git
+```
+
+```
 Backend_Url=http://localhost:8000/api/
 ```
 
