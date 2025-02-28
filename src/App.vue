@@ -44,7 +44,7 @@ nav {
 
 a {
   text-decoration: none;
-  color: #ffffff;
+  color: #f06363;
   font-weight: bold;
   transition: color 0.3s ease;
 }
@@ -76,6 +76,7 @@ button:hover {
   flex-direction: column;
   gap: 20px;
   padding: 20px;
+  align-items: center;
 }
 
 router-view {
@@ -89,5 +90,9 @@ router-view {
   background-color: #ffffff;
   border-radius: 8px;
   margin: 20px;
+}
+#heading {
+  font-size: 3rem;
+  margin-bottom: 20px;
 }
 </style>
