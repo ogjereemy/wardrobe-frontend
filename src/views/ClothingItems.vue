@@ -6,7 +6,7 @@
       <input type="text" v-model="searchQuery" placeholder="Search items..." />
       <select v-model="selectedCategory">
         <option value="">All Categories</option>
-        <option v-for="category in categories" :key="category.id" :value="category.name">
+        <option v-for="category in categories" :key="category.id" :value="category.id">
           {{ category.name }}
         </option>
       </select>
@@ -25,7 +25,8 @@
         <input v-model="newItem.description" type="text" placeholder="Description" required />
         <input v-model="newItem.size" type="text" placeholder="Size" required />
         <input v-model="newItem.color" type="text" placeholder="Color" required />
-        <select v-model="newItem.category_id">
+        <select v-model="newItem.category_id" required>
+          <option value="" disabled>Select Category</option>
           <option v-for="category in categories" :key="category.id" :value="category.id">
             {{ category.name }}
           </option>
@@ -53,8 +54,8 @@
           <td>{{ item.description }}</td>
           <td>{{ item.size }}</td>
           <td>{{ item.color }}</td>
-          <td>{{ item.category.name }}</td>
-          <td>
+          <td>{{ item.category ? item.category.name : 'Unknown' }}</td>
+          <td class="action-buttons">
             <button @click="editItem(item)">Edit</button>
             <button @click="deleteItem(item.id)">Delete</button>
           </td>
@@ -75,14 +76,24 @@
             {{ category.name }}
           </option>
         </select>
-        <button type="submit">Update</button>
-        <button type="button" @click="showEditItemForm = false">Cancel</button>
+        <div class="form-buttons">
+          <button type="submit">Update</button>
+          <button type="button" @click="showEditItemForm = false">Cancel</button>
+        </div>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  addClothingItem,
+  deleteClothingItem,
+  updateClothingItem,
+  fetchCategories,
+  fetchClothingItems,
+} from '@/services/clothingService'
+
 export default {
   data() {
     return {
@@ -105,6 +116,12 @@ export default {
   computed: {
     filteredItems() {
       let filtered = this.items
+      console.log('Items before filtering:', filtered)
+
+      if (!Array.isArray(filtered)) {
+        console.error('Items is not an array:', filtered)
+        return []
+      }
 
       if (this.searchQuery) {
         filtered = filtered.filter((item) =>
@@ -113,91 +130,70 @@ export default {
       }
 
       if (this.selectedCategory) {
-        filtered = filtered.filter((item) => item.category.name === this.selectedCategory)
+        filtered = filtered.filter(
+          (item) => item.category && item.category.id === this.selectedCategory,
+        )
       }
 
       return filtered
     },
   },
   methods: {
-    fetchItems() {
-      // Replace with API call to fetch items from the backend
-      // For example:
-      // axios.get('/api/items').then(response => {
-      //   this.items = response.data;
-      // });
-
-      this.items = [
-        // Sample data
-        {
-          id: 1,
-          name: 'Shirt',
-          description: 'Blue Shirt',
-          size: 'M',
-          color: 'Blue',
-          category: { id: 1, name: 'Tops' },
-        },
-        {
-          id: 2,
-          name: 'Jeans',
-          description: 'Black Jeans',
-          size: '32',
-          color: 'Black',
-          category: { id: 2, name: 'Bottoms' },
-        },
-      ]
-    },
-    fetchCategories() {
-      // Replace with API call to fetch categories from the backend
-      // For example:
-      // axios.get('/api/categories').then(response => {
-      //   this.categories = response.data;
-      // });
-
-      this.categories = [
-        { id: 1, name: 'Tops' },
-        { id: 2, name: 'Bottoms' },
-      ]
-    },
-    addItem() {
-      // Replace with API call to add new item
-      // For example:
-      // axios.post('/api/items', this.newItem).then(response => {
-      //   this.items.push(response.data);
-      // });
-
-      const newItem = {
-        ...this.newItem,
-        id: Date.now(),
-        category: this.categories.find((cat) => cat.id === this.newItem.category_id),
+    async fetchItems() {
+      try {
+        const response = await fetchClothingItems()
+        if (response && Array.isArray(response.data)) {
+          this.items = response.data // Assign the actual items array
+        } else {
+          console.error('Fetched data is not an array:', response)
+          this.items = [] // Fallback to an empty array
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error)
+        this.items = [] // Fallback to an empty array in case of error
       }
-      this.items.push(newItem)
-      this.resetNewItemForm()
+    },
+    async fetchCategories() {
+      try {
+        const data = await fetchCategories()
+        this.categories = data
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    },
+    async addItem() {
+      try {
+        await addClothingItem(this.newItem) // Just add the item
+        this.resetNewItemForm()
+        await this.fetchItems() // Re-fetch all items to ensure the UI is updated
+      } catch (error) {
+        console.error('Error adding item:', error)
+      }
     },
     editItem(item) {
       this.currentItem = { ...item }
       this.showEditItemForm = true
     },
-    updateItem() {
-      // Replace with API call to update item
-      // For example:
-      // axios.put(`/api/items/${this.currentItem.id}`, this.currentItem).then(response => {
-      //   const index = this.items.findIndex(i => i.id === this.currentItem.id);
-      //   this.items.splice(index, 1, response.data);
-      // });
-
-      const index = this.items.findIndex((i) => i.id === this.currentItem.id)
-      this.items.splice(index, 1, this.currentItem)
-      this.showEditItemForm = false
+    async updateItem() {
+      try {
+        const updatedItem = await updateClothingItem(this.currentItem.id, this.currentItem)
+        const index = this.items.findIndex((i) => i.id === this.currentItem.id)
+        updatedItem.category = this.categories.find(
+          (category) => category.id === updatedItem.category_id,
+        )
+        this.items.splice(index, 1, updatedItem)
+        this.showEditItemForm = false
+      } catch (error) {
+        console.error('Error updating item:', error)
+      }
     },
-    deleteItem(id) {
-      // Replace with API call to delete item
-      // For example:
-      // axios.delete(`/api/items/${id}`).then(() => {
-      //   this.items = this.items.filter(i => i.id !== id);
-      // });
-
-      this.items = this.items.filter((i) => i.id !== id)
+    async deleteItem(id) {
+      try {
+        await deleteClothingItem(id)
+        this.items = this.items.filter((i) => i.id !== id)
+      } catch (error) {
+        console.error('Error deleting item:', error)
+      }
     },
     resetNewItemForm() {
       this.newItem = {
@@ -222,6 +218,9 @@ export default {
   max-width: 900px;
   margin: 20px auto;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .search-filter {
@@ -235,6 +234,13 @@ export default {
   padding: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
+  flex: 1;
+}
+
+.add-item-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .form-section {
@@ -242,12 +248,35 @@ export default {
   padding: 20px;
   margin: 20px 0;
   border-radius: 8px;
-  color: #0056b3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h2 {
+  margin-top: 0;
+}
+
+.form-section form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-section input,
+.form-section select {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 th,
@@ -262,13 +291,19 @@ th {
   color: #0056b3;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
 button {
   background-color: #007bff;
-  color: black;
+  color: white;
   border: none;
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {

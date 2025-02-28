@@ -46,7 +46,7 @@ export const updateClothingItem = async (id, updatedItem) => {
 
 export async function deleteClothingItem(id) {
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/clothing-items/${id}`, {
+    const response = await fetch(`${API_URL}/clothing-items/${id}`, {
       method: 'DELETE',
     })
 
@@ -68,7 +68,22 @@ export async function deleteClothingItem(id) {
 }
 
 export async function fetchCategories() {
-  const response = await fetch('/api/categories')
-  const data = await response.json()
-  return data
+  try {
+    const response = await fetch(`${API_URL}/categories`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`Failed to fetch categories: ${errorText}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    throw error // rethrow to propagate the error
+  }
 }

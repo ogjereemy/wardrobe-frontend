@@ -65,10 +65,13 @@ export default {
   max-width: 400px;
   margin: 0 auto;
   padding: 20px;
+  text-align: center;
 }
 
-.register-form div {
-  margin-bottom: 15px;
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .register-form input {

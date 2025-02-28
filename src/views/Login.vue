@@ -1,9 +1,12 @@
 <template>
-  <form @submit.prevent="loginUser" class="login-form">
-    <input v-model="email" type="email" placeholder="Email" required />
-    <input v-model="password" type="password" placeholder="Password" required />
-    <button type="submit">Login</button>
-  </form>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form @submit.prevent="loginUser" class="login-form">
+      <input v-model="email" type="email" placeholder="Email" required />
+      <input v-model="password" type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -30,6 +33,7 @@ export default {
         if (response.token) {
           localStorage.setItem('token', response.token)
           alert(response.successMessage)
+          this.$emit('login-success')
           this.$router.push('/clothing-items')
         }
       } catch (error) {
@@ -42,19 +46,22 @@ export default {
 </script>
 
 <style scoped>
-.login-form {
-  max-width: 300px;
-  margin: 20px auto;
+.login-container {
+  max-width: 400px;
+  margin: 0 auto;
   padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .login-form input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
