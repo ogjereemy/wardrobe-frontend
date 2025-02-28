@@ -6,6 +6,8 @@
       <input v-model="password" type="password" placeholder="Password" required />
       <button type="submit">Login</button>
     </form>
+    <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
+    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
   </div>
 </template>
 
@@ -18,6 +20,8 @@ export default {
     return {
       email: '',
       password: '',
+      successMessage: '',
+      errorMessage: '',
     }
   },
   methods: {
@@ -32,13 +36,15 @@ export default {
 
         if (response.token) {
           localStorage.setItem('token', response.token)
-          alert(response.successMessage)
+          this.successMessage = response.successMessage
+          this.errorMessage = ''
           this.$emit('login-success')
           this.$router.push('/clothing-items')
         }
       } catch (error) {
+        this.errorMessage = 'Login failed: ' + error.message
+        this.successMessage = ''
         console.error('Login error:', error.message)
-        alert('Login failed: ' + error.message)
       }
     },
   },
@@ -78,5 +84,15 @@ export default {
 
 .login-form button:hover {
   background-color: #0056b3;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
 </style>
