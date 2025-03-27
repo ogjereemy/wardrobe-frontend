@@ -1,44 +1,92 @@
 <template>
-  <div class="clothing-items-container">
-    <h1>Clothing Items</h1>
-    <!-- Search and filter section -->
-    <div class="search-filter">
-      <input type="text" v-model="searchQuery" placeholder="Search items..." />
-      <select v-model="selectedCategory">
-        <option value="">All Categories</option>
-        <option v-for="category in categories" :key="category.id" :value="category.id">
-          {{ category.name }}
-        </option>
-      </select>
-    </div>
+  <div class="container clothing-items-container">
+    <h1 class="text-center my-4">Clothing Items</h1>
 
-    <!-- Add Item Button -->
-    <div>
-      <button @click="showAddItemForm = true">Add Item</button>
-    </div>
-
-    <!-- Add Item Form -->
-    <div v-if="showAddItemForm" class="form-section">
-      <h2>Add Item</h2>
-      <form @submit.prevent="addItem">
-        <input v-model="newItem.name" type="text" placeholder="Item Name" required />
-        <input v-model="newItem.description" type="text" placeholder="Description" required />
-        <input v-model="newItem.size" type="text" placeholder="Size" required />
-        <input v-model="newItem.color" type="text" placeholder="Color" required />
-        <select v-model="newItem.category_id" required>
-          <option value="" disabled>Select Category</option>
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <input
+          type="text"
+          v-model="searchQuery"
+          class="form-control"
+          placeholder="Search items..."
+        />
+      </div>
+      <div class="col-md-6">
+        <select v-model="selectedCategory" class="form-select">
+          <option value="">All Categories</option>
           <option v-for="category in categories" :key="category.id" :value="category.id">
             {{ category.name }}
           </option>
         </select>
-        <button type="submit">Add</button>
-        <button type="button" @click="showAddItemForm = false">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Add Item Button -->
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-primary" @click="showAddItemForm = true">Add Item</button>
+    </div>
+
+    <!-- Add Item Form -->
+    <div v-if="showAddItemForm" class="card card-body mb-4">
+      <h2 class="card-title">Add Item</h2>
+      <form @submit.prevent="addItem">
+        <div class="mb-3">
+          <input
+            v-model="newItem.name"
+            type="text"
+            class="form-control"
+            placeholder="Item Name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="newItem.description"
+            type="text"
+            class="form-control"
+            placeholder="Description"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="newItem.size"
+            type="text"
+            class="form-control"
+            placeholder="Size"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="newItem.color"
+            type="text"
+            class="form-control"
+            placeholder="Color"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <select v-model="newItem.category_id" class="form-select" required>
+            <option value="" disabled>Select Category</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-success me-2">Add</button>
+          <button type="button" class="btn btn-secondary" @click="showAddItemForm = false">
+            Cancel
+          </button>
+        </div>
       </form>
     </div>
 
     <!-- Items Table -->
-    <table>
-      <thead>
+    <table class="table table-hover table-bordered">
+      <thead class="table-light">
         <tr>
           <th>Name</th>
           <th>Description</th>
@@ -55,30 +103,66 @@
           <td>{{ item.size }}</td>
           <td>{{ item.color }}</td>
           <td>{{ item.category ? item.category.name : 'Unknown' }}</td>
-          <td class="action-buttons">
-            <button @click="editItem(item)">Edit</button>
-            <button @click="deleteItem(item.id)">Delete</button>
+          <td>
+            <button class="btn btn-sm btn-warning me-2" @click="editItem(item)">Edit</button>
+            <button class="btn btn-sm btn-danger" @click="deleteItem(item.id)">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
 
     <!-- Edit Item Form -->
-    <div v-if="showEditItemForm" class="form-section">
-      <h2>Edit Item</h2>
+    <div v-if="showEditItemForm" class="card card-body mb-4">
+      <h2 class="card-title">Edit Item</h2>
       <form @submit.prevent="updateItem">
-        <input v-model="currentItem.name" type="text" placeholder="Item Name" required />
-        <input v-model="currentItem.description" type="text" placeholder="Description" required />
-        <input v-model="currentItem.size" type="text" placeholder="Size" required />
-        <input v-model="currentItem.color" type="text" placeholder="Color" required />
-        <select v-model="currentItem.category_id">
-          <option v-for="category in categories" :key="category.id" :value="category.id">
-            {{ category.name }}
-          </option>
-        </select>
-        <div class="form-buttons">
-          <button type="submit">Update</button>
-          <button type="button" @click="showEditItemForm = false">Cancel</button>
+        <div class="mb-3">
+          <input
+            v-model="currentItem.name"
+            type="text"
+            class="form-control"
+            placeholder="Item Name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="currentItem.description"
+            type="text"
+            class="form-control"
+            placeholder="Description"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="currentItem.size"
+            type="text"
+            class="form-control"
+            placeholder="Size"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="currentItem.color"
+            type="text"
+            class="form-control"
+            placeholder="Color"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <select v-model="currentItem.category_id" class="form-select">
+            <option v-for="category in categories" :key="category.id" :value="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-success me-2">Update</button>
+          <button type="button" class="btn btn-secondary" @click="showEditItemForm = false">
+            Cancel
+          </button>
         </div>
       </form>
     </div>
@@ -116,12 +200,6 @@ export default {
   computed: {
     filteredItems() {
       let filtered = this.items
-      console.log('Items before filtering:', filtered)
-
-      if (!Array.isArray(filtered)) {
-        console.error('Items is not an array:', filtered)
-        return []
-      }
 
       if (this.searchQuery) {
         filtered = filtered.filter((item) =>
@@ -145,7 +223,6 @@ export default {
         if (response && Array.isArray(response.data)) {
           this.items = response.data // Assign the actual items array
         } else {
-          console.error('Fetched data is not an array:', response)
           this.items = [] // Fallback to an empty array
         }
       } catch (error) {
@@ -214,99 +291,5 @@ export default {
 </script>
 
 <style scoped>
-.clothing-items-container {
-  max-width: 900px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.search-filter {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.search-filter input,
-.search-filter select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  flex: 1;
-}
-
-.add-item-button {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
-}
-
-.form-section {
-  background-color: #f9f9f9;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-section h2 {
-  margin-top: 0;
-}
-
-.form-section form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-section input,
-.form-section select {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.form-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background-color: #f4f4f4;
-  color: #0056b3;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
+/* Add custom styles if necessary */
 </style>

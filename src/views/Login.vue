@@ -1,13 +1,43 @@
 <template>
-  <div class="login-container">
-    <h1>Login</h1>
-    <form @submit.prevent="loginUser" class="login-form">
-      <input v-model="email" type="email" placeholder="Email" required />
-      <input v-model="password" type="password" placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
-    <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
-    <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div class="login-page d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div
+      class="card p-4 shadow-lg border-0"
+      style="max-width: 400px; width: 100%; border-radius: 20px"
+    >
+      <h1 class="text-center mb-4 text-primary">Login</h1>
+      <form @submit.prevent="loginUser">
+        <div class="mb-3">
+          <input
+            v-model="email"
+            type="email"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            v-model="password"
+            type="password"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow">
+          Login
+        </button>
+      </form>
+      <div v-if="successMessage" class="alert alert-success mt-3">
+        {{ successMessage }}
+      </div>
+      <div v-if="errorMessage" class="alert alert-danger mt-3">
+        {{ errorMessage }}
+      </div>
+      <div class="text-center mt-3">
+        <a href="#" class="text-muted small">Forgot password?</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -52,47 +82,48 @@ export default {
 </script>
 
 <style scoped>
-.login-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+/* Add a soft background for the page */
+.login-page {
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Style the card and inputs */
+.card {
+  border-radius: 20px !important;
+  background: #fff;
 }
 
-.login-form input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+/* Input field styling */
+.form-control {
+  background-color: #f7f8fa;
+  border: 1px solid #ced4da;
+  padding: 12px 20px;
 }
 
-.login-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+}
+
+/* Style for the button */
+.btn-primary {
+  background: linear-gradient(to right, #007bff, #00bfff);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  transition: background 0.4s ease;
 }
 
-.login-form button:hover {
-  background-color: #0056b3;
+.btn-primary:hover {
+  background: linear-gradient(to right, #0056b3, #0088cc);
+  box-shadow: 0px 4px 15px rgba(0, 0, 255, 0.2);
 }
 
-.success-message {
-  color: green;
-  margin-top: 10px;
+.alert {
+  border-radius: 10px;
+  font-size: 14px;
 }
 
-.error-message {
-  color: red;
-  margin-top: 10px;
+/* Style for small text links */
+.text-muted {
+  font-size: 0.85rem;
 }
 </style>

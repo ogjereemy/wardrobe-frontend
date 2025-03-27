@@ -1,12 +1,43 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
-      <router-link to="/register" v-if="!isLoggedIn">Register</router-link>
-      <button @click="logout" v-if="isLoggedIn">Logout</button>
+  <div id="app" class="d-flex flex-column align-items-center min-vh-100 bg-light p-3">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark w-100 mb-4 shadow-sm rounded">
+      <div class="container">
+        <router-link class="navbar-brand" to="/">Wardrobe Management</router-link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/">Home</router-link>
+            </li>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <router-link class="nav-link" to="/login">Login</router-link>
+            </li>
+            <li class="nav-item" v-if="!isLoggedIn">
+              <router-link class="nav-link" to="/register">Register</router-link>
+            </li>
+            <li class="nav-item" v-if="isLoggedIn">
+              <button class="btn btn-outline-light" @click="logout">Logout</button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <router-view @login-success="checkLoginStatus"></router-view>
+
+    <!-- Main Content Area -->
+    <div class="container">
+      <router-view @login-success="checkLoginStatus"></router-view>
+    </div>
   </div>
 </template>
 
@@ -33,66 +64,24 @@ onMounted(() => {
 </script>
 
 <style scoped>
-nav {
-  padding: 1rem;
-  background-color: #343a40;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-a {
-  text-decoration: none;
-  color: #f06363;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #ffc107;
-}
-
-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
+/* Container for the entire app */
 #app {
-  font-family: 'Arial', sans-serif;
-  color: #333;
   background-color: #f8f9fa;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  align-items: center;
 }
 
-router-view {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  border-radius: 8px;
-  margin: 20px;
+/* Main navigation bar */
+.navbar {
+  padding: 1rem;
 }
-#heading {
-  font-size: 3rem;
-  margin-bottom: 20px;
+
+/* Router link active state */
+.nav-link.active {
+  color: #ffc107 !important;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
 }
 </style>

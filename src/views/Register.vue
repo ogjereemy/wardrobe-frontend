@@ -1,30 +1,59 @@
 <template>
-  <div class="register-container">
-    <h1>Register</h1>
-    <form @submit.prevent="register" class="register-form">
-      <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="name" required />
+  <div class="register-page d-flex justify-content-center align-items-center vh-100">
+    <div
+      class="card p-4 shadow-lg border-0"
+      style="max-width: 400px; width: 100%; border-radius: 20px"
+    >
+      <h1 class="text-center mb-4 text-success">Register</h1>
+      <form @submit.prevent="register">
+        <div class="mb-3">
+          <input
+            type="text"
+            id="name"
+            v-model="name"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Name"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="email"
+            id="email"
+            v-model="email"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Email"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Password"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="password"
+            id="password_confirmation"
+            v-model="password_confirmation"
+            class="form-control form-control-lg rounded-pill shadow-sm"
+            placeholder="Confirm Password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-success btn-lg w-100 rounded-pill shadow">
+          Register
+        </button>
+      </form>
+      <div class="text-center mt-3">
+        <a href="/login" class="text-muted small">Already have an account? Login</a>
       </div>
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password" required />
-      </div>
-      <div>
-        <label for="password_confirmation">Confirm Password:</label>
-        <input
-          type="password"
-          id="password_confirmation"
-          v-model="password_confirmation"
-          required
-        />
-      </div>
-      <button type="submit">Register</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -62,37 +91,43 @@ export default {
 </script>
 
 <style scoped>
-.register-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+/* Add a soft background for the page */
+.register-page {
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
 }
 
-.register-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Style the card and inputs */
+.card {
+  border-radius: 20px !important;
+  background: #fff;
 }
 
-.register-form input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+/* Input field styling */
+.form-control {
+  background-color: #f7f8fa;
+  border: 1px solid #ced4da;
+  padding: 12px 20px;
 }
 
-.register-form button {
-  width: 100%;
-  padding: 10px;
-  background-color: #28a745;
-  color: white;
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.25);
+}
+
+/* Style for the button */
+.btn-success {
+  background: linear-gradient(to right, #28a745, #34d058);
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  transition: background 0.4s ease;
 }
 
-.register-form button:hover {
-  background-color: #218838;
+.btn-success:hover {
+  background: linear-gradient(to right, #218838, #2ebf4f);
+  box-shadow: 0px 4px 15px rgba(0, 128, 0, 0.2);
+}
+
+/* Style for small text links */
+.text-muted {
+  font-size: 0.85rem;
 }
 </style>
