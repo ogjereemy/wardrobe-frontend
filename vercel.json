@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://wardrobe-backend-7q8o.onrender.com/api/:path*"
+    }
+  ]
+}
