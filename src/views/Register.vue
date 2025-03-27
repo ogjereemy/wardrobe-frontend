@@ -51,7 +51,8 @@ export default {
           password_confirmation: this.password_confirmation,
         }
         await register(userData)
-        // Handle successful registration
+        alert('Registration successful! Redirecting to login page...')
+        this.$router.push('/login')
       } catch (error) {
         console.error('Registration error:', error.response ? error.response.data : error.message)
       }

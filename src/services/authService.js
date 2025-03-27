@@ -1,4 +1,4 @@
-const API_URL = 'http://127.0.0.1:8000/api' // Ensure this URL matches your backend API
+const API_URL = 'https://wardrobe-backend-7q8o.onrender.com/api' // Ensure this URL matches your backend API
 
 export const login = async (credentials) => {
   try {

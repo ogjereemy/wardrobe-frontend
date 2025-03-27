@@ -8,57 +8,82 @@ import WelcomeItem from './WelcomeItem.vue'
 </script>
 
 <template>
-  <WelcomeItem>
-    <template #icon>
-      <ClothingIcon />
-    </template>
-    <template #heading>Manage Your Wardrobe</template>
+  <div class="welcome-container">
+    <WelcomeItem class="welcome-card">
+      <template #icon>
+        <ClothingIcon />
+      </template>
+      <template #heading>Manage Your Wardrobe</template>
 
-    Keep track of your wardrobe with ease. Our app allows you to add, edit, and delete clothing
-    items, making it simple to organize everything in one place.
-  </WelcomeItem>
+      Keep track of your wardrobe with ease. Our app allows you to add, edit, and delete clothing
+      items, making it simple to organize everything in one place.
+    </WelcomeItem>
 
-  <WelcomeItem>
-    <template #icon>
-      <OrganizeIcon />
-    </template>
-    <template #heading>Organize by Categories</template>
+    <WelcomeItem class="welcome-card">
+      <template #icon>
+        <OrganizeIcon />
+      </template>
+      <template #heading>Organize by Categories</template>
 
-    Organize your clothing into categories like tops, bottoms, shoes, and accessories. Use the
-    filter and search features to find specific items quickly.
-  </WelcomeItem>
+      Organize your clothing into categories like tops, bottoms, shoes, and accessories. Use the
+      filter and search features to find specific items quickly.
+    </WelcomeItem>
 
-  <WelcomeItem>
-    <template #icon>
-      <CategoriesIcon />
-    </template>
-    <template #heading>Custom Filters</template>
+    <WelcomeItem class="welcome-card">
+      <template #icon>
+        <CategoriesIcon />
+      </template>
+      <template #heading>Custom Filters</template>
 
-    Tailor your wardrobe management experience with custom filters based on item type, color, and
-    other attributes. Stay organized by easily sorting your items.
-  </WelcomeItem>
+      Tailor your wardrobe management experience with custom filters based on item type, color, and
+      other attributes. Stay organized by easily sorting your items.
+    </WelcomeItem>
 
-  <WelcomeItem>
-    <template #icon>
-      <CommunityIcon />
-    </template>
-    <template #heading>Connect with the Community</template>
+    <WelcomeItem class="welcome-card">
+      <template #icon>
+        <CommunityIcon />
+      </template>
+      <template #heading>Connect with the Community</template>
 
-    Join our community to share style tips and wardrobe management ideas with others. Ask questions,
-    share your experiences, and get inspired.
-  </WelcomeItem>
+      Join our community to share style tips and wardrobe management ideas with others. Ask
+      questions, share your experiences, and get inspired.
+    </WelcomeItem>
 
-  <WelcomeItem>
-    <template #icon>
-      <SupportIcon />
-    </template>
-    <template #heading>Support Our Project</template>
+    <WelcomeItem class="welcome-card">
+      <template #icon>
+        <SupportIcon />
+      </template>
+      <template #heading>Support Our Project</template>
 
-    Help us improve the Wardrobe Management System by providing feedback or becoming a contributor.
-    Together, we can make wardrobe organization even easier!
-  </WelcomeItem>
+      Help us improve the Wardrobe Management System by providing feedback or becoming a
+      contributor. Together, we can make wardrobe organization even easier!
+    </WelcomeItem>
+  </div>
 </template>
 <style scoped>
+.welcome-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.welcome-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.welcome-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
 h1,
 h2,
 h3,
